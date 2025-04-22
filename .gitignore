@@ -1,0 +1,13 @@
+/banking-intents-minilm
+/intent_classifier.log
+/ivr_log.csv
+/predictions.csv
+/sample_generation.log
+/splunk.log
+/temp_audio.wav
+/test_audio.wav
+/train.csv
+/training.log
+/val.csv
+/venv
+/__pycache__
