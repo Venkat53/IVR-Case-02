@@ -5,3 +5,10 @@ flask
 scikit-learn
 pyautogen
 langchain
+SpeechRecognition
+pyttsx3
+requests
+pandas
+whisper
+torch
+numpy

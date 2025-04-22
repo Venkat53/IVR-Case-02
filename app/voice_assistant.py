@@ -148,4 +148,4 @@ def ask_bot():
 if __name__ == "__main__":
     while True:
         ask_bot()
-        print("-" * 50)
+        print("-" * 50) 
