@@ -34,9 +34,7 @@ The response is spoken back using pyttsx3.
 The entire session is logged into a CSV file and a log file.
 
 🧭 Flow Diagram
-plaintext
-Copy
-Edit
+
 🎙️ Voice Input
         ↓
 🔊 Audio Captured (speech_recognition)
