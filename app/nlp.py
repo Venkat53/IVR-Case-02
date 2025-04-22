@@ -108,23 +108,13 @@ def classify_intent(query):
         logger.error(f"Classification error: {e}")
         return {"intent": "fallback", "confidence": 0.0}
 
-# Optional: Handle full processing (Intent + Response)
-def perform_action(predicted_intent):
-    if predicted_intent == "check_balance":
-        return "Your balance is $5000."
-    elif predicted_intent == "transfer_money":
-        return "Money transferred successfully."
-    else:
-        return "Sorry, I couldn't understand that request."
-
 def process_user_query(query):
     result = classify_intent(query)
     intent = result["intent"]
     confidence = result["confidence"]
 
     if intent != "fallback":
-        response = perform_action(intent)
-        return intent, confidence, response
+        return intent, confidence, "Intent recognized successfully."
     else:
         return intent, confidence, "Low confidence. Please rephrase your query."
 
