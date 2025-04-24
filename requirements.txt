@@ -1,14 +1,26 @@
+# Core LLM and Transformers
 transformers
 torch
+
+# Vector DB
+chromadb==0.4.24
+sentence-transformers
+
+# Datasets and Evaluation
 datasets
-flask
 scikit-learn
-pyautogen
-langchain
+pandas
+numpy==1.26.4
+
+# Flask for API
+flask
+requests
+
+# Speech Recognition & TTS
 SpeechRecognition
 pyttsx3
-requests
-pandas
 whisper
-torch
-numpy
+
+# Agent frameworks
+pyautogen
+langchain

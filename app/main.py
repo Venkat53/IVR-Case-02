@@ -13,12 +13,13 @@ CONFIDENCE_THRESHOLD = 0.5  # Must match the threshold in your nlp.py
 def predict_intent():
     data = request.json
     query = data.get("query")
+    session_id = data.get("session_id", "user-session")  # Retrieve session_id or use default
 
     if not query:
         return jsonify({"error": "Query is required"}), 400
 
     # Step 1: Classify the query
-    intent, confidence, action_response = process_user_query(query)
+    intent, confidence, action_response = process_user_query(query, session_id)
 
     # Step 2: Route to tool if confidence is high
     if confidence >= CONFIDENCE_THRESHOLD:

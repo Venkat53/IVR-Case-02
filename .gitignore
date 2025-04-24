@@ -14,3 +14,13 @@
 app.rar
 app.zip
 app/__pycache__/nlp.cpython-39.pyc
+app/__pycache__/__init__.cpython-313.pyc
+app/__pycache__/log_util.cpython-313.pyc
+app/__pycache__/main.cpython-39.pyc
+app/__pycache__/main.cpython-313.pyc
+app/__pycache__/nlp.cpython-39.pyc
+app/__pycache__/nlp.cpython-313.pyc
+app/__pycache__/router.cpython-39.pyc
+app/__pycache__/router.cpython-313.pyc
+app/__pycache__/tools.cpython-313.pyc
+test_audio_index_1.wav

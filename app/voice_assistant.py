@@ -6,6 +6,7 @@ import logging
 import whisper
 import os
 import subprocess
+import uuid  # To generate a unique session ID
 
 # Configuration
 API_URL = "http://localhost:5000/predict_intent"
@@ -13,16 +14,20 @@ LOG_FILE = "D:/IVR Case-02/splunk.log"
 CSV_LOG = "D:/IVR Case-02/ivr_log.csv"
 WHISPER_MODEL = "base"  # Options: tiny, base, small
 MICROPHONE_INDEX = 1  # Try 1, 3, 8, 18, or 25 based on test_mic_select.py
-USE_MANUAL_INPUT = False  # Set to True to bypass STT
+USE_MANUAL_INPUT = True  # Set to True to bypass STT
 FFMPEG_PATH = r"D:/IVR Case-02/ffmpeg/bin/ffmpeg.exe"
+
+# Generate a unique session ID for the session
+session_id = str(uuid.uuid4())  # Create a unique session ID
+print(f"🔑 Session ID: {session_id}")  # You can log or display the session ID if needed
 
 # Check and update PATH
 if os.path.exists(FFMPEG_PATH):
     ffmpeg_dir = os.path.dirname(FFMPEG_PATH)
     os.environ["PATH"] = ffmpeg_dir + os.pathsep + os.environ.get("PATH", "")
-    print(f"✅ FFmpeg path added to PATH: {ffmpeg_dir}")
+    print(f"FFmpeg path added to PATH: {ffmpeg_dir}")
 else:
-    print("❌ FFmpeg path is INVALID. Please check the FFMPEG_PATH.")
+    print("FFmpeg path is INVALID. Please check the FFMPEG_PATH.")
     
 # Logging setup
 logging.basicConfig(
@@ -40,7 +45,7 @@ def speak(text):
         engine.runAndWait()
         logger.info(f"TTS: {text}")
     except Exception as e:
-        print(f"❌ TTS error: {e}")
+        print(f"TTS error: {e}")
         logger.error(f"TTS error: {e}")
 
 # Speech-to-Text with OpenAI Whisper
@@ -56,8 +61,7 @@ def listen():
     r = sr.Recognizer()
     try:
         with sr.Microphone(device_index=MICROPHONE_INDEX) as source:
-            print("🎙️ Listening... Speak now.")
-            print("Available microphones:", sr.Microphone.list_microphone_names())
+            print("Listening... Speak now.")
             r.adjust_for_ambient_noise(source, duration=2)
             try:
                 audio = r.listen(source, timeout=10, phrase_time_limit=10)
@@ -115,7 +119,7 @@ def ask_bot():
         speak("Sorry, I didn't catch that.")
         return
 
-    payload = {"query": query}
+    payload = {"query": query, "session_id": session_id}  # Add session_id to payload
     try:
         response = requests.post(API_URL, json=payload, timeout=10)
         response.raise_for_status()
@@ -134,7 +138,8 @@ def ask_bot():
             "intent": intent,
             "confidence": confidence,
             "response": bot_response,
-            "timestamp": str(pd.Timestamp.now())
+            "timestamp": str(pd.Timestamp.now()),
+            "session_id": session_id  # Include session ID in the log
         }
         log_entry = pd.DataFrame([message])
         log_entry.to_csv(CSV_LOG, mode='a', header=not os.path.exists(CSV_LOG), index=False)
@@ -148,4 +153,4 @@ def ask_bot():
 if __name__ == "__main__":
     while True:
         ask_bot()
-        print("-" * 50) 
+        print("-" * 50)

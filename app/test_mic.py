@@ -1,4 +1,10 @@
 import speech_recognition as sr
+import os
+import sys
+
+print("Python executable path:", sys.executable)
+print("Python version:", sys.version)
+print(os.path.dirname(sys.executable))
 try:
     print("Available microphones:", sr.Microphone.list_microphone_names())
     for index in [1, 3, 8, 18, 25]:  # Test likely indices
