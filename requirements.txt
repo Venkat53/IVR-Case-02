@@ -19,7 +19,9 @@ requests
 # Speech Recognition & TTS
 SpeechRecognition
 pyttsx3
-whisper
+git+https://github.com/openai/whisper.git
+pyaudio
+
 
 # Agent frameworks
 pyautogen

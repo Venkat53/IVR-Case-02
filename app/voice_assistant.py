@@ -14,7 +14,7 @@ LOG_FILE = "D:/IVR Case-02/splunk.log"
 CSV_LOG = "D:/IVR Case-02/ivr_log.csv"
 WHISPER_MODEL = "base"  # Options: tiny, base, small
 MICROPHONE_INDEX = 1  # Try 1, 3, 8, 18, or 25 based on test_mic_select.py
-USE_MANUAL_INPUT = True  # Set to True to bypass STT
+USE_MANUAL_INPUT = False  # Set to True to bypass STT
 FFMPEG_PATH = r"D:/IVR Case-02/ffmpeg/bin/ffmpeg.exe"
 
 # Generate a unique session ID for the session
