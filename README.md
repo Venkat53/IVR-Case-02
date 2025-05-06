@@ -1,15 +1,3 @@
-# Banking Voice Assistant with Intent Classification
-
-This project implements a voice-activated banking assistant using a fine-tuned Natural Language Processing (NLP) model. It captures user intent from speech, routes the request to the appropriate banking operation, and responds using Text-to-Speech.
-
----
-
-## End-to-End Architecture
-
-The system accepts voice input through a Twilio call, converts it to text, classifies the user's banking intent, executes the corresponding action via a banking API, and returns a spoken response.
-
----
-
 ### Mermaid Flowchart (Simplified for Maximum Compatibility)
 
 ```mermaid
@@ -31,3 +19,64 @@ graph TD
     B --> K(Twilio/Other TTS)
     D --> L(OpenAI)
     L --> B
+```  
+
+                                +------------------+     +------------------+     +--------------------------+
+                                | Twilio (Call)    | --> | test_resp.py     | --> | Vosk (Speech-to-Text)    |
+                                +------------------+     +------------------+     +--------------------------+
+                                                                |                          |
+                                                                | (Text)                   |
+                                                                v                          |
+                                                        +--------------------+            |
+                                                        | test_resp.py       | <----------+
+                                                        | (API Request)      |
+                                                        +--------------------+
+                                                                |
+                                                                | (POST /predict_intent)
+                                                                v
+                                                        +--------------------+
+                                                        | main.py (Flask)    |
+                                                        | (Receive Query)    |
+                                                        +--------------------+
+                                                                |
+                                                                | (Call process_user_query)
+                                                                v
+                                                        +--------------------+     +------------------+     +------------------+
+                                                        | nlp.py             | --> | Fine-tuned Model |     | ChromaDB         |
+                                                        | (Intent Classif.)  |     | (model.py)       |     | (Session Ctx)    |
+                                                        +--------------------+     +------------------+     +------------------+
+                                                                |
+                                                                | (Intent, Confidence)
+                                                                v
+                                                        +--------------------+
+                                                        | router.py          |
+                                                        | (Route Request)    |
+                                                        +--------------------+
+                                                                |
+                                                                | (Call Tool)
+                                                                v
+                                                        +--------------------+     +--------------------------+
+                                                        | tools.py           | --> | banking_api.py           |
+                                                        | (Tool Interface)   |     | (Banking Operations)     |
+                                                        +--------------------+     +--------------------------+
+                                                                |                          ^
+                                                                | (API Call/Response)      |
+                                                                v                          |
+                                                        +--------------------+ <-----------+
+                                                        | router.py          |
+                                                        | (Process Result)   |
+                                                        +--------------------+
+                                                                |
+                                                                | (Response)
+                                                                v
+                                                        +--------------------+     +------------------+     +--------------------------+
+                                                        | main.py            | --> | test_resp.py     | --> | Twilio/Other TTS         |
+                                                        | (Return Response)  |     | (Text-to-Speech) |     | (Play Back to Caller)    |
+                                                        +--------------------+     +------------------+     +--------------------------+
+                                                                ^
+                                                                | (Low Confidence Fallback)
+                                                                |
+                                                        +------------------+
+                                                        | OpenAI           |
+                                                        | (Fallback Resp.) |
+                                                        +------------------+
